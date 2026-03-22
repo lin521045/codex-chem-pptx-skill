@@ -17,5 +17,6 @@ npx skills add https://github.com/lin521045/codex-chem-pptx-skill --skill chem-p
 1. 先判断场景属于学术研究、工艺设计还是安全培训。
 2. 用 `chem_presentation_logic.py` 规划默认大纲和图示占位符。
 3. 如果要做高端答辩版式，优先走 `python-pptx-xmu-layout.py` 这类自定义布局，而不是默认模板。
-4. 再走模板编辑或 PptxGenJS 从零生成流程。
-5. 最后执行文本 QA、占位符 QA 和视觉 QA。
+4. 如果是化工工艺设计场景，可直接参考 `python-pptx-xmu-process-layout.py`。
+5. 再走模板编辑或 PptxGenJS 从零生成流程。
+6. 最后执行文本 QA、占位符 QA 和视觉 QA。
