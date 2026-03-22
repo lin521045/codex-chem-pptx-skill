@@ -1,0 +1,5 @@
+interface:
+  display_name: "化学与化工 PPTX"
+  short_description: "面向化学与化工场景的中文优先 PPT skill"
+  brand_color: "#16423C"
+  default_prompt: "Use $chem-pptx-codex to create a chemistry or chemical engineering PowerPoint deck in Simplified Chinese with English technical terms preserved."

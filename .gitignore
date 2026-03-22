@@ -1,0 +1,15 @@
+.venv/
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+*.pptx
+*.pdf
+*.png
+*.jpg
+*.jpeg
+*.log
+tmp-*/
+dist/
+build/
+site/

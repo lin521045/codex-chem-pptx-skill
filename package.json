@@ -1,0 +1,10 @@
+{
+  "name": "codex-chem-pptx-skill",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Codex skill project for chemistry and chemical engineering PPT generation",
+  "license": "MIT",
+  "dependencies": {
+    "pptxgenjs": "^4.0.1"
+  }
+}

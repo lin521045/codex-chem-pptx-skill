@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>chem-pptx-codex</title>
+  <meta name="description" content="面向化学与化工场景的 Codex PPTX skill，支持中文优先、英文术语保留、领域大纲与图示占位符。">
+  <link rel="stylesheet" href="./assets/skill.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="https://github.com/lin521045/codex-chem-pptx-skill">Skills</a>
+      <nav class="topnav">
+        <a href="https://github.com/lin521045/codex-chem-pptx-skill">仓库</a>
+        <a href="https://github.com/lin521045/codex-chem-pptx-skill/blob/main/README.md">README</a>
+        <a href="https://github.com/lin521045/codex-chem-pptx-skill/blob/main/skills/chem-pptx-codex/SKILL.md">SKILL.md</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap page">
+    <section class="hero">
+      <div class="hero-main">
+        <div class="breadcrumbs">
+          <span>skills</span>
+          <span>/</span>
+          <span>lin521045</span>
+          <span>/</span>
+          <span>codex-chem-pptx-skill</span>
+          <span>/</span>
+          <span>chem-pptx-codex</span>
+        </div>
+        <h1>chem-pptx-codex</h1>
+        <pre class="install"><code>$ npx skills add https://github.com/lin521045/codex-chem-pptx-skill --skill chem-pptx-codex</code></pre>
+
+        <h2>摘要</h2>
+        <p class="lead">为化学与化工领域量身定制的 Codex PPT skill。默认用简体中文写作，但自然保留英文化学术语、缩写、软件名称和专有名词。</p>
+        <ul class="summary-list">
+          <li>角色重构为“资深化学与化工演示文稿专家”</li>
+          <li>内置学术研究、化工工艺设计、安全生产培训三套中文骨架</li>
+          <li>自动处理中英混排空格、SI 单位规范、化学式 Unicode 上下标回退</li>
+          <li>每页默认生成化工图示占位符，如 ChemDraw、Aspen PFD/P&amp;ID、SEM/TEM、动力学曲线</li>
+        </ul>
+      </div>
+
+      <aside class="hero-side">
+        <div class="side-card">
+          <div class="side-kicker">仓库</div>
+          <a href="https://github.com/lin521045/codex-chem-pptx-skill">lin521045/codex-chem-pptx-skill</a>
+        </div>
+        <div class="side-card">
+          <div class="side-kicker">技能</div>
+          <a href="https://github.com/lin521045/codex-chem-pptx-skill/blob/main/skills/chem-pptx-codex/SKILL.md">SKILL.md</a>
+          <a href="https://github.com/lin521045/codex-chem-pptx-skill/blob/main/skills/chem-pptx-codex/editing.md">editing.md</a>
+          <a href="https://github.com/lin521045/codex-chem-pptx-skill/blob/main/skills/chem-pptx-codex/pptxgenjs.md">pptxgenjs.md</a>
+        </div>
+        <div class="side-card">
+          <div class="side-kicker">逻辑</div>
+          <a href="https://github.com/lin521045/codex-chem-pptx-skill/blob/main/skills/chem-pptx-codex/scripts/chem_presentation_logic.py">chem_presentation_logic.py</a>
+          <p>负责默认大纲、文本预处理和图示占位符建议。</p>
+        </div>
+        <div class="side-card">
+          <div class="side-kicker">许可</div>
+          <p>MIT</p>
+        </div>
+      </aside>
+    </section>
+
+    <section class="content-grid">
+      <article class="content">
+        <h2>角色设定</h2>
+        <p>该 skill 默认把 Codex 设定为“资深化学与化工演示文稿专家”。输出以简体中文为主，但以下内容必须优先保留英文：</p>
+        <ul>
+          <li>Ziegler-Natta catalyst、MOFs、DFT、GC-MS、HPLC、BET、XRD</li>
+          <li>Aspen Plus、Aspen HYSYS、PFD、P&amp;ID、HAZOP、LOPA</li>
+          <li>In-situ FTIR、SEM、TEM、¹³C NMR</li>
+        </ul>
+
+        <hr>
+
+        <h2>默认大纲模板</h2>
+        <table>
+          <thead>
+            <tr><th>场景</th><th>默认结构</th><th>典型占位符</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>学术研究 / 实验报告</td>
+              <td>背景与意义、Reaction Mechanism、实验方法与表征、结果与讨论、结论与展望</td>
+              <td>结构式、机理图、NMR/IR/MS、SEM/TEM</td>
+            </tr>
+            <tr>
+              <td>化工工艺设计</td>
+              <td>项目背景、路线比选、Mass &amp; Energy Balance、设备选型、HSE、Techno-Economic Analysis</td>
+              <td>Aspen PFD/P&amp;ID、衡算表、设备选型表、kinetics 曲线</td>
+            </tr>
+            <tr>
+              <td>安全生产培训</td>
+              <td>危险性分析、MSDS 解读、事故案例、Emergency Response、SOP</td>
+              <td>MSDS 标注图、因果树、应急流程图、SOP 步骤图</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <hr>
+
+        <h2>专业排版规则</h2>
+        <ul>
+          <li>中文汉字与英文缩写、软件名、阿拉伯数字之间默认保留一个半角空格。</li>
+          <li>优先输出 `H₂O`、`SO₄²⁻`、`¹³C NMR` 这样的 Unicode 结果，而不是低可读的 ASCII 化学式。</li>
+          <li>单位统一到 `mol/L`、`kJ/mol`、`m³/h`、`wt%`、`MPa`、`°C`。</li>
+          <li>不要把专业英文术语硬翻译成不自然中文。</li>
+        </ul>
+
+<pre><code>python skills/chem-pptx-codex/scripts/chem_presentation_logic.py \
+  --scenario process_design \
+  --topic "年产 10 万吨 Polycarbonate (PC) 工艺设计" \
+  --text "通过GC-MS进行了产物分析，进料流量为18.4t/h，副产物含SO4^2-"</code></pre>
+
+        <hr>
+
+        <h2>视觉与占位符</h2>
+        <p>化工技术页面默认必须带有专业图示，不允许只用纯文字填满整页。</p>
+        <div class="two-col">
+          <div>
+            <h3>优先占位</h3>
+            <ul>
+              <li>[在此插入 ChemDraw 分子结构图]</li>
+              <li>[在此插入 Reaction Mechanism 示意图]</li>
+              <li>[在此插入 NMR/IR/MS 谱图]</li>
+              <li>[在此插入 SEM/TEM 表征图片]</li>
+            </ul>
+          </div>
+          <div>
+            <h3>工艺 / 安全页</h3>
+            <ul>
+              <li>[在此插入 Aspen PFD/P&amp;ID 流程图]</li>
+              <li>[在此插入 Mass &amp; Energy Balance 表格]</li>
+              <li>[在此插入 HAZOP/LOPA 风险矩阵]</li>
+              <li>[在此插入 Emergency Response 流程图]</li>
+            </ul>
+          </div>
+        </div>
+
+        <hr>
+
+        <h2>代码层逻辑</h2>
+        <p>仓库保留了原始 skill 的 PPTX 工具链，同时新增了一个领域逻辑脚本，用来承担“场景识别后的默认大纲 + 文本预处理 + 占位符建议”。</p>
+        <table>
+          <thead>
+            <tr><th>文件</th><th>作用</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><a href="https://github.com/lin521045/codex-chem-pptx-skill/blob/main/skills/chem-pptx-codex/scripts/chem_presentation_logic.py">chem_presentation_logic.py</a></td><td>大纲规划函数、格式规范和占位符生成</td></tr>
+            <tr><td><a href="https://github.com/lin521045/codex-chem-pptx-skill/blob/main/examples/starter-pptxgenjs.js">starter-pptxgenjs.js</a></td><td>“年产 10 万吨 PC 工艺设计” starter deck</td></tr>
+            <tr><td><a href="https://github.com/lin521045/codex-chem-pptx-skill/blob/main/examples/python-pptx-chemical-formatting.py">python-pptx-chemical-formatting.py</a></td><td>run 级上标/下标示例与 Unicode 回退说明</td></tr>
+          </tbody>
+        </table>
+
+        <hr>
+
+        <h2>验证与 QA</h2>
+<pre><code>python skills/chem-pptx-codex/scripts/extract_text.py output.pptx
+python skills/chem-pptx-codex/scripts/check_placeholders.py output.pptx
+python skills/chem-pptx-codex/scripts/thumbnail.py output.pptx</code></pre>
+
+        <p>视觉 QA 默认按化工页面检查：图谱是否缺失、PFD/P&amp;ID 是否越界、图题与条件说明是否裁切、化学式是否错位。</p>
+      </article>
+    </section>
+  </main>
+</body>
+</html>
