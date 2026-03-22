@@ -1,6 +1,6 @@
 ---
 name: chem-pptx-codex
-description: 创建、编辑、读取和处理化学与化工领域的 PowerPoint 演示文稿。凡是任务涉及 chemistry、chemical engineering、reaction mechanism、实验表征、工艺设计、HSE 培训、Aspen Plus、PFD、P&ID、答辩 PPT、汇报 PPT，或任何 .pptx 文件作为输入或输出时，都应触发此技能。该技能保留通用 PPTX skill 的核心工作流，但默认使用化学与化工领域的大纲骨架、简体中文主叙述、英文专业术语保留、中英混排格式、化学式 Unicode 回退与领域图示占位符逻辑。
+description: 创建、编辑、读取和处理化学与化工领域的 PowerPoint 演示文稿。凡是任务涉及 chemistry、chemical engineering、reaction mechanism、实验表征、工艺设计、HSE 培训、Aspen Plus、PFD、P&ID、答辩 PPT、汇报 PPT，或任何 .pptx 文件作为输入或输出时，都应触发此技能。该技能保留通用 PPTX skill 的核心工作流，但默认使用化学与化工领域的大纲骨架、简体中文主叙述、英文专业术语保留、中英混排格式、化学式 Unicode 回退，并优先采用“顶部横幅 + 左侧全局导航 + 安全内容区”的高端科研答辩版式。
 ---
 
 # 化学与化工 PPTX 技能（Codex 版）
@@ -12,26 +12,52 @@ description: 创建、编辑、读取和处理化学与化工领域的 PowerPoin
 - 主语言必须是简体中文。
 - 对通用化学专有名词、反应名称、表征缩写、软件名称、材料缩写和工艺图缩写，直接使用英文或保留英文原名。
 - 不要把 `Ziegler-Natta catalyst`、`MOFs`、`HPLC`、`Aspen Plus`、`In-situ FTIR`、`SEM`、`TEM`、`MSDS` 之类的术语生硬翻成中文。
-- 语气应严谨、专业、适合学术答辩、工艺汇报或厂内培训。
+- 视觉目标不是“普通实验汇报”，而是“高水平学术答辩 + 咨询报告感”的混合风格。
 
-## 先判定场景
+## 场景判定
 
 在生成大纲前，先将任务归入以下 3 类之一：
 
 | 场景 | 触发信号 | 默认结构 |
 | --- | --- | --- |
-| 学术研究/实验报告 | 手稿、论文、实验、表征、催化、机理、材料性能 | 背景、机理、方法与表征、结果讨论、结论 |
+| 学术研究 / 实验报告 | 手稿、论文、实验、表征、催化、机理、材料性能 | 背景、机理、方法与表征、结果讨论、结论 |
 | 化工工艺设计 | 年产、工艺路线、Aspen、设备、能量衡算、TEA | 项目背景、路线比选、Mass & Energy Balance、设备、HSE、经济性 |
 | 安全生产培训 | 培训、MSDS、事故、应急、SOP、风险识别 | 危险性、事故案例、应急处置、SOP、复盘 |
 
 如果用户没有明确指定，按内容自动推断。对“产能、流程、设备、能量衡算”优先归类为“化工工艺设计”。
 
+## 版式优先级
+
+默认优先使用自定义版式，而不是库的默认模板。内容页优先采用：
+
+1. 顶部横幅：整页主标题位于深色横幅中，白字、粗体、无衬线。
+2. 左侧全局导航：列出整套演示的主章节，并高亮当前章节。
+3. 内容安全区：正文、表格、图示占位符必须限制在右侧安全区域内，不能压到横幅和导航栏。
+
+相关规范和代码入口：
+
+- [references/xmu-layout-system-prompt.md](references/xmu-layout-system-prompt.md)
+- [examples/python-pptx-xmu-layout.py](../../examples/python-pptx-xmu-layout.py)
+
+## 品牌配色
+
+默认使用“厦门大学蓝”风格系统：
+
+- 主色：`#003F88`
+- 背景：`#FFFFFF` 或 `#F8F9FA`
+- 正文：`#333333`
+- 横幅文字：`#FFFFFF`
+- 侧栏非激活章节：`#888888`
+
+只有在用户明确要求其他品牌色时才覆盖。
+
 ## 快速参考
 
 | 任务 | 指南 |
 | --- | --- |
-| 阅读/分析内容 | `python scripts/extract_text.py presentation.pptx` |
+| 阅读 / 分析内容 | `python scripts/extract_text.py presentation.pptx` |
 | 生成领域大纲 | `python scripts/chem_presentation_logic.py --scenario academic --topic "某催化体系反应机理研究"` |
+| 高端科研答辩版式示例 | `python ../../examples/python-pptx-xmu-layout.py` |
 | 模板编辑 | 阅读 [editing.md](editing.md) |
 | 从零创建 | 阅读 [pptxgenjs.md](pptxgenjs.md) |
 
@@ -42,19 +68,18 @@ description: 创建、编辑、读取和处理化学与化工领域的 PowerPoin
 - [references/build-from-scratch.md](references/build-from-scratch.md)：化学与化工默认大纲模板
 - [references/editing-workflow.md](references/editing-workflow.md)：模板编辑映射方法
 - [references/design-playbook.md](references/design-playbook.md)：化工主题视觉约束
+- [references/xmu-layout-system-prompt.md](references/xmu-layout-system-prompt.md)：高端科研答辩布局与 LLM 输出格式
 
-如需确定性的结构规划，使用：
+## LLM 输出结构要求
 
-```bash
-python scripts/chem_presentation_logic.py --scenario process_design --topic "年产 10 万吨 Polycarbonate (PC) 工艺设计"
-```
+当你需要先规划内容，再交给代码生成器时，必须把每页内容拆成以下结构：
 
-这个脚本会返回：
+1. `Chapter Name`
+2. `Slide Title`
+3. `Bullet Points`
+4. `Visual Placeholder`
 
-- 默认 slide 标题
-- 每页核心要点
-- 化工领域图片占位符
-- 中英混排与化学式预处理后的文本
+不要直接给一整段散文式描述。必须保证内容能映射到“左侧导航 + 右侧安全区”的固定布局。
 
 ## 文本生成规则
 
@@ -62,19 +87,19 @@ python scripts/chem_presentation_logic.py --scenario process_design --topic "年
 
 - 主叙述使用简体中文。
 - 保留专业英文术语和缩写。
-- 中文与英文/数字之间默认保留一个半角空格。
+- 中文与英文 / 数字之间默认保留一个半角空格。
 
 正确示例：
 
 - `通过 GC-MS 进行了产物分析`
 - `添加了 50 mmol 的催化剂`
-- `使用 Aspen Plus 完成了 Mass & Energy Balance`
+- `使用 Aspen Plus 完成了 物料衡算 (Mass Balance)`
 
 ### 化学式和上下标
 
-- 如果底层库不能稳定设置 run 级上标/下标，优先输出 Unicode 上下标字符，例如：`H₂O`、`SO₄²⁻`、`¹³C NMR`。
-- 只有当用户明确使用支持 run 级格式控制的库时，才写入对应的字体格式代码。
-- 不要把化学式写成难读的纯 ASCII 形式，除非用户明确要求。
+- 如果底层库不能稳定设置 run 级上标 / 下标，优先输出 Unicode 上下标字符，例如：`H₂O`、`SO₄²⁻`、`¹³C NMR`。
+- 如果用户明确要求使用 `python-pptx`，并且目标环境支持 `run.font.subscript` / `run.font.superscript`，可以使用运行级格式控制。
+- 相关示例见 [examples/python-pptx-chemical-formatting.py](../../examples/python-pptx-chemical-formatting.py) 和 [examples/python-pptx-xmu-layout.py](../../examples/python-pptx-xmu-layout.py)。
 
 ### 单位
 
@@ -112,18 +137,6 @@ python scripts/office/unpack.py template.pptx unpacked/
 
 先完成 slide 结构映射，再替换文本和图示占位符。不要先把整页文字塞满再补图。
 
-## 从零创建
-
-完整说明见 [pptxgenjs.md](pptxgenjs.md)。
-
-如果没有模板，使用 PptxGenJS 从零创建。先定：
-
-1. 场景类型
-2. 大纲骨架
-3. 图示占位符
-4. 文本预处理规则
-5. QA 流程
-
 ## QA（必须）
 
 默认第一版一定有问题。QA 必须按“查错”而不是“确认”的思路执行。
@@ -140,18 +153,18 @@ python scripts/check_placeholders.py output.pptx
 - 中英文之间是否缺少空格
 - 单位是否规范
 - 化学式上下标是否损坏
-- 是否误翻译了英文术语
+- 章节与左侧导航是否一致
 - 占位符是否残留
 
 ### 视觉 QA
 
 把幻灯片导出成图片后逐页检查：
 
-- 图谱或流程图是否缺失
-- 机理箭头和标注是否拥挤
-- PFD/P&ID 占位框是否越界
+- 顶部横幅标题是否完整
+- 左侧当前章节高亮是否正确
+- 右侧内容是否越过安全区
+- 图谱、流程图、结构式或设备图是否缺失
 - 表格字号是否过小
-- 化学式是否被错误换行
 - 图题、来源、条件说明是否裁切
 
 Codex 版说明：
@@ -172,7 +185,7 @@ python scripts/thumbnail.py output.pptx
 - `pip install "markitdown[pptx]"`：可选文本抽取
 - `pip install Pillow`：缩略图拼板
 - `pip install PyMuPDF`：PDF 栅格化
-- `pip install python-pptx`：可选 run 级文本格式示例
+- `pip install python-pptx`：支持 `python-pptx` 版式脚本和 run 级字体控制
 - `npm install pptxgenjs`：从零创建 deck
 - LibreOffice `soffice`：PDF 转换
 - Microsoft PowerPoint（Windows，可选）：高保真导出和 PDF 输出
